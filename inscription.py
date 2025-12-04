@@ -5,6 +5,7 @@ from tkcalendar import DateEntry
 import mysql.connector
 import random 
 from tkinter import messagebox
+import psycopg2
 
 
 s = 4
@@ -100,11 +101,13 @@ def ENREGISTRER():
         messagebox.showerror("Info","Veuillez renseigner tous les champs")
     #---Requête 1
     else:
-        connexion = mysql.connector.connect(
+        connexion = psycopg2.connect(
         host="localhost",
-        user="root",
-        password="",
-        database = "PYTHON")
+        user="postgres",
+        password="29122003",
+        database = "python",
+        port=5432
+        );
 
         curseur = connexion.cursor()
 
@@ -112,7 +115,7 @@ def ENREGISTRER():
         valeur = (A,B,C,D,E,p)
         curseur.execute(sql,valeur)
         #---Requête 2
-        yann = "INSERT INTO  FORMATION(Nom_Formateur,Durée,Montant,Date_Inscription,Jour_de_Formation,Type) VALUES(%s,%s,%s,%s,%s,%s)"
+        yann = "INSERT INTO  FORMATION(Nom_Formateur,Duree,Montant,Date_Inscription,Jour_de_Formation,Type) VALUES(%s,%s,%s,%s,%s,%s)"
         franck = (F,G,H,I,J,K)
         # curseur.execute(sql,valeur)
         curseur.execute(yann,franck)
@@ -358,6 +361,7 @@ def IMPRIMER():
     # Le nom et prénom de l'apprenant
     nom_apprenant = FA.get()
     prenom_apprenant = FB.get()
+    
     
     # Nom du fichier
     nom_fichier = f"{nom_apprenant}_{prenom_apprenant}.pdf".replace(' ', '_').replace('/', '_').replace('\\', '_')
